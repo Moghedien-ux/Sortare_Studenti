@@ -1,0 +1,36 @@
+Student 1 : Ionescu Maria | Facultate: Electronica_si_Telecomunicatii | Varsta: 21 | An: 3
+   -> Inaltime: 1.72 m
+   -> Nume Tata: Gheorghe
+Student 2 : Popescu Andrei | Facultate: Automatica_si_Calculatoare | Varsta: 20 | An: 2
+   -> CNP: 5030101123456
+   -> Nume Mama: Elena
+Student 3 : Radu Gabriel | Facultate: Inginerie_Electrica | Varsta: 22 | An: 1
+   -> CNP: 5020505654321
+   -> Inaltime: 1.85 m
+   -> Nume Mama: Maria
+   -> Nume Tata: Vasile
+
+Student 1 : Popescu Andrei | Facultate: Automatica_si_Calculatoare | Varsta: 20 | An: 2
+   -> CNP: 5030101123456
+   -> Nume Mama: Elena
+Student 2 : Ionescu Maria | Facultate: Electronica_si_Telecomunicatii | Varsta: 21 | An: 3
+   -> Inaltime: 1.72 m
+   -> Nume Tata: Gheorghe
+Student 3 : Radu Gabriel | Facultate: Inginerie_Electrica | Varsta: 22 | An: 1
+   -> CNP: 5020505654321
+   -> Inaltime: 1.85 m
+   -> Nume Mama: Maria
+   -> Nume Tata: Vasile
+
+Student 1 : Radu Gabriel | Facultate: Inginerie_Electrica | Varsta: 22 | An: 1
+   -> CNP: 5020505654321
+   -> Inaltime: 1.85 m
+   -> Nume Mama: Maria
+   -> Nume Tata: Vasile
+Student 2 : Popescu Andrei | Facultate: Automatica_si_Calculatoare | Varsta: 20 | An: 2
+   -> CNP: 5030101123456
+   -> Nume Mama: Elena
+Student 3 : Ionescu Maria | Facultate: Electronica_si_Telecomunicatii | Varsta: 21 | An: 3
+   -> Inaltime: 1.72 m
+   -> Nume Tata: Gheorghe
+
