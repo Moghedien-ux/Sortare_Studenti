@@ -1,0 +1,84 @@
+Sortare in functie de: Dupa Nume
+Student 1 : Constantin Stefan | Facultate: Automatica_si_Calculatoare | Varsta: 22 | An: 3
+   -> CNP: 5021111987654
+   -> Inaltime: 1.80 m
+Student 2 : Dumitrescu Elena | Facultate: Mecanica_si_Mechatronica | Varsta: 19 | An: 1
+Student 3 : Gheorghiu Mihai | Facultate: Energetica | Varsta: 24 | An: 2
+   -> Nume Mama: Simona
+Student 4 : Ionescu Maria | Facultate: Electronica_si_Telecomunicatii | Varsta: 21 | An: 3
+   -> Inaltime: 1.72 m
+   -> Nume Tata: Gheorghe
+Student 5 : Marcu Diana | Facultate: Arhitectura | Varsta: 21 | An: 4
+   -> Nume Tata: Ion
+Student 6 : Popescu Andrei | Facultate: Automatica_si_Calculatoare | Varsta: 20 | An: 2
+   -> CNP: 5030101123456
+   -> Nume Mama: Elena
+Student 7 : Radu Gabriel | Facultate: Inginerie_Electrica | Varsta: 22 | An: 1
+   -> CNP: 5020505654321
+   -> Inaltime: 1.85 m
+   -> Nume Mama: Maria
+   -> Nume Tata: Vasile
+Student 8 : Stan Cristian | Facultate: Transporturi | Varsta: 23 | An: 2
+   -> CNP: 5010909123890
+Student 9 : Stoica Ana | Facultate: Chimie_Aplicata | Varsta: 20 | An: 2
+   -> Inaltime: 1.65 m
+Student 10 : Vasilescu Laura | Facultate: Biotehnologii | Varsta: 20 | An: 1
+   -> Nume Mama: Daniela
+   -> Nume Tata: Dumitru
+
+Sortare in functie de: Dupa Varsta
+Student 1 : Dumitrescu Elena | Facultate: Mecanica_si_Mechatronica | Varsta: 19 | An: 1
+Student 2 : Popescu Andrei | Facultate: Automatica_si_Calculatoare | Varsta: 20 | An: 2
+   -> CNP: 5030101123456
+   -> Nume Mama: Elena
+Student 3 : Stoica Ana | Facultate: Chimie_Aplicata | Varsta: 20 | An: 2
+   -> Inaltime: 1.65 m
+Student 4 : Vasilescu Laura | Facultate: Biotehnologii | Varsta: 20 | An: 1
+   -> Nume Mama: Daniela
+   -> Nume Tata: Dumitru
+Student 5 : Marcu Diana | Facultate: Arhitectura | Varsta: 21 | An: 4
+   -> Nume Tata: Ion
+Student 6 : Ionescu Maria | Facultate: Electronica_si_Telecomunicatii | Varsta: 21 | An: 3
+   -> Inaltime: 1.72 m
+   -> Nume Tata: Gheorghe
+Student 7 : Radu Gabriel | Facultate: Inginerie_Electrica | Varsta: 22 | An: 1
+   -> CNP: 5020505654321
+   -> Inaltime: 1.85 m
+   -> Nume Mama: Maria
+   -> Nume Tata: Vasile
+Student 8 : Constantin Stefan | Facultate: Automatica_si_Calculatoare | Varsta: 22 | An: 3
+   -> CNP: 5021111987654
+   -> Inaltime: 1.80 m
+Student 9 : Stan Cristian | Facultate: Transporturi | Varsta: 23 | An: 2
+   -> CNP: 5010909123890
+Student 10 : Gheorghiu Mihai | Facultate: Energetica | Varsta: 24 | An: 2
+   -> Nume Mama: Simona
+
+Sortare in functie de: Dupa an de studiu
+Student 1 : Dumitrescu Elena | Facultate: Mecanica_si_Mechatronica | Varsta: 19 | An: 1
+Student 2 : Vasilescu Laura | Facultate: Biotehnologii | Varsta: 20 | An: 1
+   -> Nume Mama: Daniela
+   -> Nume Tata: Dumitru
+Student 3 : Radu Gabriel | Facultate: Inginerie_Electrica | Varsta: 22 | An: 1
+   -> CNP: 5020505654321
+   -> Inaltime: 1.85 m
+   -> Nume Mama: Maria
+   -> Nume Tata: Vasile
+Student 4 : Popescu Andrei | Facultate: Automatica_si_Calculatoare | Varsta: 20 | An: 2
+   -> CNP: 5030101123456
+   -> Nume Mama: Elena
+Student 5 : Stoica Ana | Facultate: Chimie_Aplicata | Varsta: 20 | An: 2
+   -> Inaltime: 1.65 m
+Student 6 : Stan Cristian | Facultate: Transporturi | Varsta: 23 | An: 2
+   -> CNP: 5010909123890
+Student 7 : Gheorghiu Mihai | Facultate: Energetica | Varsta: 24 | An: 2
+   -> Nume Mama: Simona
+Student 8 : Constantin Stefan | Facultate: Automatica_si_Calculatoare | Varsta: 22 | An: 3
+   -> CNP: 5021111987654
+   -> Inaltime: 1.80 m
+Student 9 : Ionescu Maria | Facultate: Electronica_si_Telecomunicatii | Varsta: 21 | An: 3
+   -> Inaltime: 1.72 m
+   -> Nume Tata: Gheorghe
+Student 10 : Marcu Diana | Facultate: Arhitectura | Varsta: 21 | An: 4
+   -> Nume Tata: Ion
+

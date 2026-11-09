@@ -1,18 +1,22 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <errno.h>
 
 #define MAX_NAME_LENGTH 50
 #define MAX_FACULTY_NAME_LENGTH 255
 #define MAX_LEVEL_LENGTH 10
 #define MAX_CRITERIA_FUNCTIONS 10
+#define MAX_CRITERIA_DEFINITION 255
+#define LINE_BUFFER_SIZE 1024
 
 typedef enum {
-    ARE_CNP       = (1 << 0), // uint64_t
-    ARE_INALTIME  = (1 << 1), // float
-    ARE_NUME_MAMA = (1 << 2), // string
-    ARE_NUME_TATA = (1 << 3)  // string
+    ARE_CNP       = (1 << 0),
+    ARE_INALTIME  = (1 << 1),
+    ARE_NUME_MAMA = (1 << 2),
+    ARE_NUME_TATA = (1 << 3)
 } DateOptionale;
 
 typedef struct {
@@ -33,6 +37,11 @@ typedef struct {
 } student;
 
 typedef int (*cmp_func)(const void *, const void *);
+
+typedef struct {
+    char *Criteriu;
+    cmp_func func;
+} crit;
 
 static void swap(void *a, void *b, size_t elem_size) {
     void *temp = malloc(elem_size);
@@ -59,7 +68,7 @@ static size_t partition(void *arr, size_t count, size_t elem_size, cmp_func cmp)
     return i;
 }
 
-void quick_sort(void *arr, const size_t arr_size, const size_t arr_type_size, cmp_func cmp) {
+static void quick_sort(void *arr, const size_t arr_size, const size_t arr_type_size, cmp_func cmp) {
     if (arr_size <= 1) return;
 
     size_t pivot_index = partition(arr, arr_size, arr_type_size, cmp);
@@ -90,7 +99,7 @@ static inline int crit_2(const void *a, const void *b) {
     return (int)s1->Date.an - (int)s2->Date.an;
 }
 
-void afisare_studenti(FILE *fout, student** studenti, const size_t nr_studenti) {
+static void afisare_studenti(FILE *fout, student** studenti, const size_t nr_studenti) {
     for (size_t i = 0; i < nr_studenti; i++) {
         const student *s = studenti[i];
         fprintf(fout, "Student %zu : %s %s | Facultate: %s | Varsta: %hhu | An: %hhu\n",
@@ -135,7 +144,20 @@ static inline void free_studenti(student** studenti, const size_t nr_studenti) {
     free(studenti);
 }
 
-int main(void) {
+static inline crit *NewCrit(const char *type, cmp_func func) {
+    crit* new = (crit*)malloc(sizeof(crit));
+    if (!new) return NULL;
+    new->Criteriu = (char*)malloc(MAX_CRITERIA_DEFINITION * sizeof(char));
+    if (!new->Criteriu) {
+        free(new);
+        return NULL;
+    }
+    strcpy(new->Criteriu, type);
+    new->func = func;
+    return new;
+}
+
+int main() {
     FILE *fin = fopen("Studenti.in", "r");
     if (!fin) return -1;
 
@@ -145,12 +167,22 @@ int main(void) {
         return -1;
     }
 
-    size_t nr_studenti = 0;
-    if (fscanf(fin, "%zu", &nr_studenti) != 1) {
+    char buffer[LINE_BUFFER_SIZE];
+    if (!fgets(buffer, sizeof(buffer), fin)) {
         fclose(fin);
         fclose(fout);
         return -1;
     }
+
+    char *endptr;
+    errno = 0;
+    unsigned long val_nr = strtoul(buffer, &endptr, 10);
+    if (errno != 0 || endptr == buffer) {
+        fclose(fin);
+        fclose(fout);
+        return -1;
+    }
+    size_t nr_studenti = (size_t)val_nr;
 
     student **studenti_UNSTPB = (student**)malloc(nr_studenti * sizeof(student*));
     if (!studenti_UNSTPB) {
@@ -164,15 +196,24 @@ int main(void) {
         char temp_prenume[MAX_NAME_LENGTH];
         char temp_facultate[MAX_FACULTY_NAME_LENGTH];
         char temp_nivel[MAX_LEVEL_LENGTH];
-        uint8_t varsta, id_student, an, flags;
 
-        fscanf(fin, "%49s %49s %hhu %hhu %254s %9s %hhu %hhu",
-               temp_nume,
-               temp_prenume,
-               &varsta, &id_student,
-               temp_facultate,
-               temp_nivel,
-               &an, &flags);
+        if (fscanf(fin, "%49s %49s", temp_nume, temp_prenume) != 2) break;
+
+        char num_buf[64];
+
+        if (fscanf(fin, "%63s", num_buf) != 1) break;
+        uint8_t varsta = (uint8_t)strtoul(num_buf, NULL, 10);
+
+        if (fscanf(fin, "%63s", num_buf) != 1) break;
+        uint8_t id_student = (uint8_t)strtoul(num_buf, NULL, 10);
+
+        if (fscanf(fin, "%254s %9s", temp_facultate, temp_nivel) != 2) break;
+
+        if (fscanf(fin, "%63s", num_buf) != 1) break;
+        uint8_t an = (uint8_t)strtoul(num_buf, NULL, 10);
+
+        if (fscanf(fin, "%63s", num_buf) != 1) break;
+        uint8_t flags = (uint8_t)strtoul(num_buf, NULL, 10);
 
         size_t payload_size = 0;
         uint64_t temp_cnp = 0;
@@ -181,11 +222,15 @@ int main(void) {
         char temp_tata[MAX_NAME_LENGTH] = {0};
 
         if (flags & ARE_CNP) {
-            fscanf(fin, "%llu", &temp_cnp);
+            if (fscanf(fin, "%63s", num_buf) == 1) {
+                temp_cnp = (uint64_t)strtoull(num_buf, NULL, 10);
+            }
             payload_size += sizeof(uint64_t);
         }
         if (flags & ARE_INALTIME) {
-            fscanf(fin, "%f", &temp_inaltime);
+            if (fscanf(fin, "%63s", num_buf) == 1) {
+                temp_inaltime = strtof(num_buf, NULL);
+            }
             payload_size += sizeof(float);
         }
         if (flags & ARE_NUME_MAMA) {
@@ -198,16 +243,17 @@ int main(void) {
         }
 
         studenti_UNSTPB[i] = (student*)malloc(sizeof(student) + payload_size);
+        if (!studenti_UNSTPB[i]) break;
 
         studenti_UNSTPB[i]->varsta = varsta;
         studenti_UNSTPB[i]->ID_Student = id_student;
         studenti_UNSTPB[i]->Date.an = an;
         studenti_UNSTPB[i]->flags = flags;
 
-        studenti_UNSTPB[i]->Nume = strdup(temp_nume);
-        studenti_UNSTPB[i]->Prenume = strdup(temp_prenume);
-        studenti_UNSTPB[i]->Date.Facultate = strdup(temp_facultate);
-        studenti_UNSTPB[i]->Date.Nivel = strdup(temp_nivel);
+        studenti_UNSTPB[i]->Nume = _strdup(temp_nume);
+        studenti_UNSTPB[i]->Prenume = _strdup(temp_prenume);
+        studenti_UNSTPB[i]->Date.Facultate = _strdup(temp_facultate);
+        studenti_UNSTPB[i]->Date.Nivel = _strdup(temp_nivel);
 
         uint8_t *p = studenti_UNSTPB[i]->date;
 
@@ -230,13 +276,20 @@ int main(void) {
     }
 
     size_t nr_criterii_de_sortare = 3;
-    cmp_func *criterii_de_sortare = (cmp_func*)malloc(MAX_CRITERIA_FUNCTIONS * sizeof(cmp_func));
+    crit **criterii_de_sortare = (crit **)malloc(nr_criterii_de_sortare * sizeof(crit*));
     if (criterii_de_sortare) {
-        memcpy(criterii_de_sortare, (cmp_func[]){crit_0, crit_1, crit_2}, nr_criterii_de_sortare * sizeof(cmp_func));
+        *(criterii_de_sortare) = NewCrit("Dupa Nume", crit_0);
+        *(criterii_de_sortare + 1) = NewCrit("Dupa Varsta", crit_1);
+        *(criterii_de_sortare + 2) = NewCrit("Dupa an de studiu", crit_2);
 
         for (size_t i = 0; i < nr_criterii_de_sortare; ++i) {
-            quick_sort(studenti_UNSTPB, nr_studenti, sizeof(student*), *(criterii_de_sortare + i));
-            afisare_studenti(fout, studenti_UNSTPB, nr_studenti);
+            if (*(criterii_de_sortare + i)) {
+                fprintf(fout, "Sortare in functie de: %s\n", criterii_de_sortare[i]->Criteriu);
+                quick_sort(studenti_UNSTPB, nr_studenti, sizeof(student*), (*(criterii_de_sortare + i))->func);
+                afisare_studenti(fout, studenti_UNSTPB, nr_studenti);
+                free((*(criterii_de_sortare + i))->Criteriu);
+                free(*(criterii_de_sortare + i));
+            }
         }
         free(criterii_de_sortare);
     }
