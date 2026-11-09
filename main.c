@@ -136,18 +136,17 @@ static inline void free_studenti(student** studenti, const size_t nr_studenti) {
 }
 
 int main(void) {
-    FILE *fin = NULL;
-    FILE *fout = NULL;
+    FILE *fin = fopen("Studenti.in", "r");
+    if (!fin) return -1;
 
-    if (fopen_s(&fin, "Studenti.in", "r") != 0 || !fin)
-        return -1;
-    if (fopen_s(&fout, "Studenti.out", "w") != 0 || !fout) {
+    FILE *fout = fopen("Studenti.out", "w");
+    if (!fout) {
         fclose(fin);
         return -1;
     }
 
     size_t nr_studenti = 0;
-    if (fscanf_s(fin, "%zu", &nr_studenti) != 1) {
+    if (fscanf(fin, "%zu", &nr_studenti) != 1) {
         fclose(fin);
         fclose(fout);
         return -1;
@@ -167,13 +166,13 @@ int main(void) {
         char temp_nivel[MAX_LEVEL_LENGTH];
         uint8_t varsta, id_student, an, flags;
 
-        fscanf_s(fin, "%49s %49s %hhu %hhu %254s %9s %hhu %hhu",
-                 temp_nume, (unsigned int)MAX_NAME_LENGTH,
-                 temp_prenume, (unsigned int)MAX_NAME_LENGTH,
-                 &varsta, &id_student,
-                 temp_facultate, (unsigned int)MAX_FACULTY_NAME_LENGTH,
-                 temp_nivel, (unsigned int)MAX_LEVEL_LENGTH,
-                 &an, &flags);
+        fscanf(fin, "%49s %49s %hhu %hhu %254s %9s %hhu %hhu",
+               temp_nume,
+               temp_prenume,
+               &varsta, &id_student,
+               temp_facultate,
+               temp_nivel,
+               &an, &flags);
 
         size_t payload_size = 0;
         uint64_t temp_cnp = 0;
@@ -182,19 +181,19 @@ int main(void) {
         char temp_tata[MAX_NAME_LENGTH] = {0};
 
         if (flags & ARE_CNP) {
-            fscanf_s(fin, "%llu", &temp_cnp);
+            fscanf(fin, "%llu", &temp_cnp);
             payload_size += sizeof(uint64_t);
         }
         if (flags & ARE_INALTIME) {
-            fscanf_s(fin, "%f", &temp_inaltime);
+            fscanf(fin, "%f", &temp_inaltime);
             payload_size += sizeof(float);
         }
         if (flags & ARE_NUME_MAMA) {
-            fscanf_s(fin, "%49s", temp_mama, (unsigned int)MAX_NAME_LENGTH);
+            fscanf(fin, "%49s", temp_mama);
             payload_size += strlen(temp_mama) + 1;
         }
         if (flags & ARE_NUME_TATA) {
-            fscanf_s(fin, "%49s", temp_tata, (unsigned int)MAX_NAME_LENGTH);
+            fscanf(fin, "%49s", temp_tata);
             payload_size += strlen(temp_tata) + 1;
         }
 
@@ -205,10 +204,10 @@ int main(void) {
         studenti_UNSTPB[i]->Date.an = an;
         studenti_UNSTPB[i]->flags = flags;
 
-        studenti_UNSTPB[i]->Nume = _strdup(temp_nume);
-        studenti_UNSTPB[i]->Prenume = _strdup(temp_prenume);
-        studenti_UNSTPB[i]->Date.Facultate = _strdup(temp_facultate);
-        studenti_UNSTPB[i]->Date.Nivel = _strdup(temp_nivel);
+        studenti_UNSTPB[i]->Nume = strdup(temp_nume);
+        studenti_UNSTPB[i]->Prenume = strdup(temp_prenume);
+        studenti_UNSTPB[i]->Date.Facultate = strdup(temp_facultate);
+        studenti_UNSTPB[i]->Date.Nivel = strdup(temp_nivel);
 
         uint8_t *p = studenti_UNSTPB[i]->date;
 
@@ -221,11 +220,11 @@ int main(void) {
             p += sizeof(float);
         }
         if (flags & ARE_NUME_MAMA) {
-            strcpy_s((char*)p, strlen(temp_mama) + 1, temp_mama);
+            strcpy((char*)p, temp_mama);
             p += strlen(temp_mama) + 1;
         }
         if (flags & ARE_NUME_TATA) {
-            strcpy_s((char*)p, strlen(temp_tata) + 1, temp_tata);
+            strcpy((char*)p, temp_tata);
             p += strlen(temp_tata) + 1;
         }
     }
