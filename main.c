@@ -250,10 +250,10 @@ int main() {
         studenti_UNSTPB[i]->Date.an = an;
         studenti_UNSTPB[i]->flags = flags;
 
-        studenti_UNSTPB[i]->Nume = _strdup(temp_nume);
-        studenti_UNSTPB[i]->Prenume = _strdup(temp_prenume);
-        studenti_UNSTPB[i]->Date.Facultate = _strdup(temp_facultate);
-        studenti_UNSTPB[i]->Date.Nivel = _strdup(temp_nivel);
+        studenti_UNSTPB[i]->Nume = strdup(temp_nume);
+        studenti_UNSTPB[i]->Prenume = strdup(temp_prenume);
+        studenti_UNSTPB[i]->Date.Facultate = strdup(temp_facultate);
+        studenti_UNSTPB[i]->Date.Nivel = strdup(temp_nivel);
 
         uint8_t *p = studenti_UNSTPB[i]->date;
 
